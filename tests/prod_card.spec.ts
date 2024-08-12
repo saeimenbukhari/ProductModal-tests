@@ -28,6 +28,34 @@ test('Verify each products color box count', async ({page})=>{
 
 })
 
+test('Verify all product information for a product card',async ({page}) =>{
+
+
+    const prodCards= new ProductCard(page);
+    //verify product info
+    let productName='T-shirt with an embroidered logo'
+      
+    await prodCards.verifyProductLogo(0)
+    await prodCards.verifyProductName(0,productName)
+    //await prodCards.verifyProductPrice(0,'20.99')
+
+
+})
+
+test('Verify all product information for all product cards', async ({page}) =>{
+
+
+    const prodCards= new ProductCard(page);
+    //verify product info
+    let productName='T-shirt with an embroidered logo'
+    
+      
+    await prodCards.verifyProductInfos(productName)
+   
+
+
+})
+
 
 
 
