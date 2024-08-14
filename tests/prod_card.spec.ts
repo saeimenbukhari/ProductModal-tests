@@ -4,6 +4,7 @@ import { ProductCard } from '../pageObjects/ProductCard';
 test.beforeEach(async ({ page }) => {
     // Navigate to the base URL
     await page.goto('/');
+    await page.waitForTimeout(15000);
     
   });
 

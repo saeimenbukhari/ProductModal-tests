@@ -4,6 +4,7 @@ import { BasePage } from '../pageObjects/BasePage';
 test.beforeEach(async ({ page }) => {
   // Navigate to the base URL before each test
   await page.goto('/');
+  await page.waitForTimeout(15000);
 });
 
 test('should open the home page and verify the title', async ({ page }) => {
