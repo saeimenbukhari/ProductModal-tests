@@ -106,6 +106,19 @@ export class ProductView{
 
     }
 
+    async verifyProductNameFooter(productName: string){
+
+        //get the product using the product index 
+        const prodName=this.page.locator('.product-sticky-footer__name')
+        await prodName.scrollIntoViewIfNeeded();
+
+        //verify product name is displayed 
+        await expect(prodName).toHaveText(productName,{ignoreCase:true})
+
+    }
+
+    
+
     async verifyLogo(){
  
         const logo=this.page.locator('.product-detail__logo')
@@ -116,7 +129,9 @@ export class ProductView{
 
     }
 
-    async openProductInfoTab(tabName: string, tabContent: string){
+    
+
+    async openProductInfoTab(tabName: string, expectedText: string){
         const prodInfoTabs=this.page.locator('.product-info__tab-item')
         //productDetails tab
         let prodElement 
@@ -140,6 +155,93 @@ export class ProductView{
 
         //verify the content 
         const contentArea=this.page.locator('.product-info__tab-content')
+        const actualText = await contentArea.textContent();
+        if (actualText !== null) {
+            const normalizedActualText = actualText.replace(/\s+/g, ' ').trim();
+            const normalizedExpectedText = expectedText.replace(/\s+/g, ' ').trim();
+        
+            expect(normalizedActualText).toContain(normalizedExpectedText);
+        } else {
+            throw new Error('Text content is null');
+        }
+
+    }
+
+    async checkSizeOptionVisibilty(){
+
+        const sizeButtons=this.page.locator('.product-detail__size-options-button')
+        const sizeButtonCount=await sizeButtons.count()
+        expect(sizeButtonCount).toBe(5)
+
+        // Loop through each element and verify its visibility
+        for (let i = 0; i < sizeButtonCount; i++) {
+        const productItem = sizeButtons.nth(i);
+        await expect(productItem).toBeVisible();
+    }
+
+
+    }
+    
+    //size can be one of the following: s,m,l,xl,xxl
+    async selectSizeLabel(){
+
+        
+        const sizeButtons=this.page.locator('.product-detail__size-options-button')
+        //as a proof of concept I am going to add a method here that would have been used if color selection worked properly
+        
+        /*
+        //ideally the method would have the parameter size: string
+        // Mapping object to associate each size with its corresponding index
+        let sizeButton
+        const sizeIndexes: { [key: string]: number } = {
+            's': 0,   
+            'm': 1,  
+            'l': 2,  
+            'xl': 3,  
+            'xxl': 4  
+           };
+
+        const sizeIndex = sizeIndexes[size];
+
+        if (sizeIndex === undefined) {
+            throw new Error(`Invalid size: ${size}`);
+        }
+        
+        sizeButton = sizeButtons.nth(sizeIndex);
+        //verify that the button is enabled
+        expect(sizeButton).toHaveClass('border rounded text-button-secondary border-2 border-border-secondary text-button-secondary-light cursor-default product-detail__size-options-button')
+
+        */
+   
+        
+
+        //since it is unpredictable which color is selected, and therefore the sizes available
+        //the size will be selected based on enabled state 
+        const count = await sizeButtons.count();
+
+        // Iterate through each button to find the first enabled one
+        for (let i = 0; i < count; i++) {
+        const button = sizeButtons.nth(i);
+
+        // Check if the button is enabled
+        const isDisabled = await button.evaluate((el) => (el as HTMLButtonElement).disabled);
+
+        if (!isDisabled) {
+            // Click the first enabled button
+            await button.scrollIntoViewIfNeeded();
+            await button.click();
+
+            // Verify the button's text
+            const buttonText =await button.textContent();
+            const sizeLabel=await this.page.locator('.product-detail__size-value').textContent()
+            expect(sizeLabel).toEqual(buttonText);
+        }
+    }
+    
+
+
+        
+
 
     }
 

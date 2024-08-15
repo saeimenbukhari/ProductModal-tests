@@ -1,3 +1,13 @@
+interface ProductDetails {
+  detailTabContent: string;
+  fitTabContent: string;
+  materialTabContent: string;
+  sustainabilityTabContent: string;
+}
+
+import productDetails from '../testData/productDetails.json';
+const typedProductDetails = productDetails as ProductDetails;
+
 import { test, expect } from '@playwright/test';
 import { ProductView } from '../pageObjects/ProductView';
 
@@ -32,6 +42,8 @@ test('Verify that images can be browsed',async ({page})=>{
 
 })
 
+
+//this test will fail beacuse the color feature is buggy
 test('Verify product colors can be selected',async ({page})=>{
 
   const prodView= new ProductView(page);
@@ -46,13 +58,61 @@ test.only('Verify product information tabs are clickable, and display correct in
 
   const prodView= new ProductView(page);
   await prodView.openProductView(0)
-  //await prodView.openProductInfoTab('details')
-  //await prodView.openProductInfoTab('fit')
-  //await prodView.openProductInfoTab('material')
-  //await prodView.openProductInfoTab('sustainibilty')
+
+  let productContent: string
+  
+  //verify the details tab
+  productContent=typedProductDetails.detailTabContent
+  await prodView.openProductInfoTab('details',productContent)
+
+  //verify the fit tab
+  productContent=typedProductDetails.fitTabContent
+  await prodView.openProductInfoTab('fit',productContent)
+   
+  //verify the material tab
+  productContent=typedProductDetails.materialTabContent
+  await prodView.openProductInfoTab('material',productContent)
+
+  //verify the sustainibilty tab
+  productContent=typedProductDetails.sustainabilityTabContent
+  await prodView.openProductInfoTab('sustainibilty',productContent)
+
+
+})
+
+
+test('Verify product deatils',async ({page})=>{
+
+  const prodView= new ProductView(page);
+  await prodView.openProductView(0)
+
+  //verify that the s.oliver logo is visible
+  await prodView.verifyLogo()
+
+  //verify that the product name is visible and correct
+  let prodName: string
+  prodName=typedProductDetails.productName
+  await prodView.verifyProductName(prodName)
+
+  //verify product name in footer
+  await prodView.verifyProductNameFooter(prodName)
+
+  //price can not be verified as in the given module prices are generated randomly
+  //await prodView.verifyProductPrice()
 
 
 
+})
+
+test('Verify size options',async ({page})=>{
+
+  const prodView= new ProductView(page);
+  await prodView.openProductView(0)
+
+  //verify that size buttons are available and visible 
+  await prodView.checkSizeOptionVisibilty()
+  //verify that after seleting a size the correct size is displayed in the size field
+  await prodView.selectSizeLabel()
 
 
 })
