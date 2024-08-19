@@ -54,12 +54,13 @@ export class ProductView{
         
 
         //active images have the class component 'product-gallery__carousel-item--active'
-        //const imageToCheck = this.page.locator('.product-gallery__carousel-item').nth(imageIndex);
+        const imageToCheck = this.page.locator('.product-gallery__carousel-item').nth(imageIndex);
 
         //Click to navigate to the next image
-        carouselButton.click({ force: true });
-        //Verify that the previous image no longer has the active class
-        //await expect(imageToCheck).toHaveClass('product-gallery__carousel-item--active');
+        await carouselButton.click({ force: true });
+        //Verify that the next image has the active class
+        await expect(imageToCheck).toHaveClass('lazy-image cursor-zoom-in product-gallery__carousel-item--active product-gallery__carousel-item');
+        
        
         
    
@@ -152,6 +153,7 @@ export class ProductView{
         //verify that the correct tab is open 
         await prodElement.click({force: true})
         await expect(prodElement).toHaveClass('product-info__tab-item product-info__tab-item--active')
+        await this.page.waitForTimeout(7000)
 
         //verify the content 
         const contentArea=this.page.locator('.product-info__tab-content')
@@ -243,6 +245,30 @@ export class ProductView{
         
 
 
+    }
+
+    async addProductToCart(productAmount :string){
+            
+        const amountField=this.page.locator('#amount')
+        await amountField.scrollIntoViewIfNeeded()
+
+        await amountField.click(); 
+        await amountField.fill(productAmount);
+
+        //add to cart using button 
+        const addToCartButton=this.page.locator('.product-sticky-footer__add-cart-button')
+        await addToCartButton.click()
+
+        //verify that the add to card notification is shown 
+        const notificationSticker=this.page.locator('.vue-notification-group')
+        const notificationText=await notificationSticker.textContent()
+        const expectedText='Successfully added to cartT-shirt with an embroidered logo'
+        
+        //normalize text and verify text content 
+        const normalizedActualText = notificationText?.trim().toLowerCase();
+        const normalizedExpectedText = expectedText.toLowerCase();
+
+        expect(normalizedActualText).toBe(normalizedExpectedText)
     }
 
 

@@ -38,7 +38,9 @@ test('Verify that images can be browsed',async ({page})=>{
 
   await prodView.openProductView(0)
   //browse and verify that the next image is active
-  await prodView.navigateToNextImage('right',2)
+  //this method needs to be improved to check the status of previous image as well 
+  await prodView.navigateToNextImage('right',1)
+  await prodView.navigateToNextImage('left',0)
 
 })
 
@@ -81,7 +83,7 @@ test.only('Verify product information tabs are clickable, and display correct in
 })
 
 
-test('Verify product deatils',async ({page})=>{
+test('Verify product details',async ({page})=>{
 
   const prodView= new ProductView(page);
   await prodView.openProductView(0)
@@ -116,6 +118,20 @@ test('Verify size options',async ({page})=>{
 
 
 })
+
+test('Verify footer options',async ({page})=>{
+
+  const prodView= new ProductView(page);
+  await prodView.openProductView(0)
+  //add 2 products to card
+  await prodView.addProductToCart('2')
+
+  
+
+
+})
+
+
 
 
 

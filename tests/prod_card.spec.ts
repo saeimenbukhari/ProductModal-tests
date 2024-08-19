@@ -1,3 +1,14 @@
+interface ProductDetails {
+    detailTabContent: string;
+    fitTabContent: string;
+    materialTabContent: string;
+    sustainabilityTabContent: string;
+  }
+  
+  import productDetails from '../testData/productDetails.json';
+  const typedProductDetails = productDetails as ProductDetails;
+
+
 import { test, expect } from '@playwright/test';
 import { ProductCard } from '../pageObjects/ProductCard';
 
@@ -34,10 +45,11 @@ test('Verify all product information for a product card',async ({page}) =>{
 
     const prodCards= new ProductCard(page);
     //verify product info
-    let productName='T-shirt with an embroidered logo'
+    let prodName: string
+    prodName=typedProductDetails.productName
       
     await prodCards.verifyProductLogo(0)
-    await prodCards.verifyProductName(0,productName)
+    await prodCards.verifyProductName(0,prodName)
     //await prodCards.verifyProductPrice(0,'20.99')
 
 
@@ -48,14 +60,17 @@ test('Verify all product information for all product cards', async ({page}) =>{
 
     const prodCards= new ProductCard(page);
     //verify product info
-    let productName='T-shirt with an embroidered logo'
+    let prodName: string
+    prodName=typedProductDetails.productName
     
       
-    await prodCards.verifyProductInfos(productName)
+    await prodCards.verifyProductInfos(prodName)
    
 
 
 })
+
+//implement color selection cases
 
 
 
