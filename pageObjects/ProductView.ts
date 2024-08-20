@@ -13,7 +13,6 @@ export class ProductView{
         //locate a product
         const product=this.page.locator('.product-page__card').nth(productIndex);
         const prodImage=product.locator('.lazy-image.bg-white.product-page__card-image')
-        //await expect(prodImage).toBeVisible({ timeout: 15000 });
         
         await prodImage.click({ force: true });
         
@@ -28,15 +27,15 @@ export class ProductView{
 
     }
 
-    async closeProductView(productIndex: number){
-        this.openProductView(productIndex)
+    async checkProductView(){
+        const productView= this.page.locator('.product-view')
+        await expect(productView).toBeVisible() 
+      }
+
+    async closeProductView(){
 
         let closeButton=this.page.locator('.close-button-container__button')
         await closeButton.click();
-        
-
-        //verify that its closed
-        
 
 
     }
@@ -60,7 +59,7 @@ export class ProductView{
         await carouselButton.click({ force: true });
         //Verify that the next image has the active class
         await expect(imageToCheck).toHaveClass('lazy-image cursor-zoom-in product-gallery__carousel-item--active product-gallery__carousel-item');
-        
+
        
         
    
@@ -259,6 +258,11 @@ export class ProductView{
         const addToCartButton=this.page.locator('.product-sticky-footer__add-cart-button')
         await addToCartButton.click()
 
+        
+    }
+
+    async verifyNotification(){
+
         //verify that the add to card notification is shown 
         const notificationSticker=this.page.locator('.vue-notification-group')
         const notificationText=await notificationSticker.textContent()
@@ -269,6 +273,7 @@ export class ProductView{
         const normalizedExpectedText = expectedText.toLowerCase();
 
         expect(normalizedActualText).toBe(normalizedExpectedText)
+
     }
 
 

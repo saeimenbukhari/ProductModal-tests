@@ -21,7 +21,7 @@ test('should open the home page and verify the title', async ({ page }) => {
  });
 
 
-  test('Verify THE LOGO', async ({ page }) => {
+  test('Verify the logo', async ({ page }) => {
     
     const basePage = new BasePage(page);
 

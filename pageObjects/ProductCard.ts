@@ -28,7 +28,6 @@ export class ProductCard{
 
         //get the color boxes
         const colorBoxes=product.locator('.product-page__color-box')
-        await colorBoxes.isVisible()
 
         //verify color box count
         await expect(colorBoxes).toHaveCount(expectedCount)
@@ -99,9 +98,58 @@ export class ProductCard{
         }
 
 
+      }
 
+      //product index is esentially the index of the product cards, in this case it can be 0-3
+      async getColorOptions(productIndex: number){
+
+        const productCard=this.page.locator('.product-page__card').nth(productIndex)
+        const colorTray=productCard.locator('.product-page__color-images')
+
+        return colorTray
+          
+      }
+      
+      //product index is esentially the index of the product cards, in this case it can be 0-3
+      async openProductColor(productIndex: number, color: string){
+
+        let colorTray=await this.getColorOptions(productIndex)
+        let colorOption=colorTray.locator('.product-page__color-box');
+
+        const count = await colorOption.count();
+
+        // Find the color box that matches the desired background color
+        for (let i = 0; i < count; i++) {
+          const box = colorOption.nth(i);
+
+          // Get the background color of the box
+          const backgroundColor = await box.evaluate(element => {
+              return window.getComputedStyle(element).backgroundColor;
+          });
+
+          // If the background color matches the desired color, click the box
+          if (backgroundColor === color) {
+              await box.click();
+              //verify that the product view is open 
+              const productView= this.page.locator('.product-view')
+              await expect(productView).toBeVisible()
+              return;
+          }
+
+          
+      }
+
+      
+
+      throw new Error(`No color box found with the color ${color}`);
+    
+      
 
       }
+
+      
+
+      
 
 
 }

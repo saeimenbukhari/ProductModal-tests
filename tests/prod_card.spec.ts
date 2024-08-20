@@ -11,6 +11,7 @@ interface ProductDetails {
 
 import { test, expect } from '@playwright/test';
 import { ProductCard } from '../pageObjects/ProductCard';
+import { ProductView } from '../pageObjects/ProductView';
 
 test.beforeEach(async ({ page }) => {
     // Navigate to the base URL
@@ -70,7 +71,39 @@ test('Verify all product information for all product cards', async ({page}) =>{
 
 })
 
-//implement color selection cases
+
+
+test('Verify selecting a color opens the product view ', async ({page}) =>{
+
+
+    const prodCards= new ProductCard(page);
+    const prodView= new ProductView(page);
+    
+    
+    let color: string
+    //Verify clicking the white color opens the product view
+    color=typedProductDetails.colorWhite
+    await prodCards.openProductColor(0,color)
+    await prodView.closeProductView()
+
+    //Verify clicking the red color opens the product view
+    color=typedProductDetails.colorRed
+    await prodCards.openProductColor(0,color)
+    await prodView.closeProductView()
+
+    //Verify clicking the blue color opens the product view
+    color=typedProductDetails.colorBlue
+    await prodCards.openProductColor(0,color)
+    await prodView.closeProductView()
+
+    //Verify clicking the black color opens the product view
+    color=typedProductDetails.colorBlack
+    await prodCards.openProductColor(0,color)
+    await prodView.closeProductView()
+
+
+
+})
 
 
 

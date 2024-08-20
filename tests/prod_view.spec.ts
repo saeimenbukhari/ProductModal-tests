@@ -25,7 +25,7 @@ test('Open and close a product view', async ({page})=>{
     const prodView= new ProductView(page);
 
     await prodView.openProductView(0)
-    await prodView.closeProductView(0)
+    await prodView.closeProductView()
    
 
 })
@@ -119,12 +119,29 @@ test('Verify size options',async ({page})=>{
 
 })
 
+//this case should fail because a size is not selected 
 test('Verify footer options',async ({page})=>{
 
   const prodView= new ProductView(page);
   await prodView.openProductView(0)
   //add 2 products to card
   await prodView.addProductToCart('2')
+  await prodView.verifyNotification()
+
+  
+
+
+})
+ 
+test('Verify items can not be added to cart without a quantity',async ({page})=>{
+
+  const prodView= new ProductView(page);
+  await prodView.openProductView(0)
+  //add 2 products to card
+  await prodView.addProductToCart('0')
+  //test fails if product view is not visible
+  await prodView.checkProductView()
+  
 
   
 
