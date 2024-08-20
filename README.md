@@ -46,6 +46,27 @@ Playwright generates a test report by default. To view the report, run:
 npx playwright show-report
 ```
 
+### (Important) TypeScript Configuration
+
+This project uses TypeScript, and specific configurations have been made in the `tsconfig.json` file to support importing JSON files directly.
+
+#### Important `tsconfig.json` Settings:
+
+- **`resolveJsonModule`:** Set to `true` to allow importing JSON files as modules directly in TypeScript files.
+- **`target`:** Set to `es2016` to specify the ECMAScript target version for the TypeScript compiler.
+
+These settings are essential for the correct functioning of the tests, particularly when working with JSON data files for test input.
+
+```json
+{
+  "compilerOptions": {
+    "resolveJsonModule": true,
+    "target": "es2016",
+    ...
+  }
+}
+```
+
 
 
 
