@@ -56,7 +56,7 @@ test('Verify product colors can be selected',async ({page})=>{
 
 })
 
-test.only('Verify product information tabs are clickable, and display correct info',async ({page})=>{
+test('Verify product information tabs are clickable, and display correct info',async ({page})=>{
 
   const prodView= new ProductView(page);
   await prodView.openProductView(0)
