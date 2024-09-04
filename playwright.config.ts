@@ -38,7 +38,7 @@ export default defineConfig({
       name: 'chromium',
       use: { 
         ...devices['Desktop Chrome'],
-        baseURL: 'http://localhost:8080/'
+        baseURL: 'http://localhost:8081/'
         //,headless: false
         ,
         screenshot: 'only-on-failure'
@@ -49,14 +49,14 @@ export default defineConfig({
       name: 'firefox',
       use: { 
         ...devices['Desktop Firefox'],
-        baseURL: 'http://localhost:8080/' },
+        baseURL: 'http://localhost:8081/' },
     },
 
     {
       name: 'webkit',
       use: { 
         ...devices['Desktop Safari'],
-        baseURL: 'http://localhost:8080/'
+        baseURL: 'http://localhost:8081/'
        },
     },
     
